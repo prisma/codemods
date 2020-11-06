@@ -10,25 +10,27 @@ export default function transform(file: FileInfo, api: API, options: Options) {
   // Convert the entire file source into a collection of nodes paths.
   const root = j(file.source);
   let edit: string[] = []
-  let prismaTypeImports: string[] = []
   const prismaImport = root.find(j.ImportDeclaration, (value) => value.source.value === "@prisma/client")
 
   const specifiers = prismaImport.find(j.ImportSpecifier).filter(nPath => {
-    if(nPath.value.local && nPath.value.local.name !== 'PrismaClient'){
+    if (nPath.value.local && nPath.value.local.name !== 'PrismaClient') {
       edit.push(nPath.value.local.name)
       return true
     } return false
   }).remove()
+
   specifiers.at(0).insertBefore(j.importSpecifier(j.identifier('Prisma')))
+
   const refs = root.find(j.TSTypeReference)
-  const identifers = refs.find(j.Identifier)
-  identifers.filter(idPath => {
+  const identifiers = refs.find(j.Identifier)
+  // console.log(identifiers)
+  identifiers.filter(idPath => {
     return edit.includes(idPath.value.name)
   }).replaceWith((p) => Object.assign({}, p.node, {
-      name: `Prisma.${p.node.name}`
+    name: `Prisma.${p.node.name}`
   }))
-  // console.log(edit);
-  return root.toSource();
+
+  return root.toSource()
 }
 
-export const parser = "ts";
+export const parser = 'ts'
