@@ -1,10 +1,10 @@
 import stripAnsi from 'strip-ansi'
 
 const serializer = {
-  test(value) {
+  test(value: any) {
     return typeof value === 'string' || value instanceof Error
   },
-  serialize(value) {
+  serialize(value: any) {
     if (typeof value === 'string') {
       return cleanLogs(value)
     }
