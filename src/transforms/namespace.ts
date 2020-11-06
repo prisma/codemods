@@ -21,15 +21,14 @@ export default function transform(file: FileInfo, api: API, options: Options) {
 
   specifiers.at(0).insertBefore(j.importSpecifier(j.identifier('Prisma')))
 
-  const refs = root.find(j.TSTypeReference)
-  const identifiers = refs.find(j.Identifier)
+  // const refs = root.find(j.TSTypeReference)
+  const identifiers = root.find(j.Identifier)
   // console.log(identifiers)
   identifiers.filter(idPath => {
     return edit.includes(idPath.value.name)
   }).replaceWith((p) => Object.assign({}, p.node, {
     name: `Prisma.${p.node.name}`
   }))
-
   return root.toSource()
 }
 

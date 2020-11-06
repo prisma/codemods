@@ -9,15 +9,15 @@
     "codemods": "bin/run"
   },
   "scripts": {
+    "postinstall": "npm run build",
     "watch": "tsc -w",
-    "test": "tsc -b && jest",
-    "postpack": "rm -f oclif.manifest.json",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
-    "build": "tsc -d"
+    "test": "npm run build && jest",
+    "build": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",
     "@prisma/cli": "^2.10.2",
+    "@types/debug": "^4.1.5",
     "@types/jest": "^26.0.15",
     "@types/jscodeshift": "^0.7.1",
     "@types/node": "^14.14.6",
@@ -32,6 +32,7 @@
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-help": "^3.2.0",
+    "debug": "^2.6.9",
     "jscodeshift": "^0.11.0",
     "tslib": "^2.0.3"
   },
