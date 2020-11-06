@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES5",                          
+    "declaration": true,
+    "importHelpers": true,
+    "target": "es2017",                          
     "module": "commonjs",                     
-    "outDir": "./dist",                        
-    "rootDir": "./src",                       
+    "outDir": "lib",                        
+    "rootDir": "src",                       
     "strict": true,                          
     "esModuleInterop": true,                  
     "skipLibCheck": true,                     
     "forceConsistentCasingInFileNames": true 
   },
-  "exclude": ["./tests"]
+  "include": [
+    "src/**/*"
+  ]
 }
