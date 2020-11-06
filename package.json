@@ -5,20 +5,49 @@
   "repository": "git@github.com:prisma/codemods.git",
   "author": "William Luke <luke@primsa.io>",
   "license": "MIT",
+  "bin": {
+    "codemods": "bin/run"
+  },
   "scripts": {
     "watch": "tsc -w",
-    "test": "jest"
+    "test": "jest",
+    "postpack": "rm -f oclif.manifest.json",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme"
   },
   "devDependencies": {
+    "@oclif/dev-cli": "^1.22.2",
     "@prisma/cli": "^2.10.2",
     "@types/jest": "^26.0.15",
     "@types/jscodeshift": "^0.7.1",
     "@types/node": "^14.14.6",
     "jest": "^26.6.3",
-    "jscodeshift": "^0.11.0",
     "prettier": "^2.1.2",
     "ts-jest": "^26.4.3",
     "typescript": "^4.0.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@oclif/command": "^1.8.0",
+    "@oclif/config": "^1.17.0",
+    "@oclif/plugin-help": "^3.2.0",
+    "jscodeshift": "^0.11.0",
+    "tslib": "^2.0.3"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "@prisma/codemods",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "types": "lib/index.d.ts"
 }
