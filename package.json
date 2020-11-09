@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "A collection of codemods for prisma",
   "repository": "git@github.com:prisma/codemods.git",
-  "author": "William Luke <luke@primsa.io>",
+  "author": "William Luke <luke@prisma.io>",
   "license": "MIT",
   "bin": {
     "codemods": "bin/run"
