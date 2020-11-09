@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",
-    "@prisma/cli": "^2.10.2",
     "@types/debug": "^4.1.5",
     "@types/jest": "^26.0.15",
     "@types/jscodeshift": "^0.7.1",
