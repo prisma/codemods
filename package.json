@@ -20,6 +20,7 @@
     "@types/jest": "^26.0.15",
     "@types/jscodeshift": "^0.7.1",
     "@types/node": "^14.14.6",
+    "dripip": "0.10.0",
     "execa": "^4.1.0",
     "jest": "^26.6.3",
     "prettier": "^2.1.2",

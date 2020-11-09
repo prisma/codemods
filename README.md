@@ -3,7 +3,7 @@
 ### Usage
 First install:
 ```shell
-npm install
+yarn && yarn build
 ```
 ```shell
 ./bin/run namespace --help                                                                         (base) 
@@ -24,5 +24,5 @@ Try the [namespace-transform](namespace-transform.js) transform:
 
 ### Test
 ```shell
-npm test
+yarn test
 ```
