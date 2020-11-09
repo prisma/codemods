@@ -4,6 +4,7 @@ import { buildRunner } from "../src/utils/runner";
 const transform = require.resolve("../lib/transforms/namespace");
 const testRunner = buildRunner(transform)
 const options = {dry: true, debug: false}
+
 test("minimal example", async () => {
   const fixturePath = path.join(__dirname, "./__fixtures__/namespace.input.ts")
   const result = await testRunner(fixturePath, options)
