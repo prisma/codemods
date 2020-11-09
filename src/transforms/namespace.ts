@@ -23,7 +23,6 @@ export default function transform(file: FileInfo, api: API, options: Options) {
 
   // const refs = root.find(j.TSTypeReference)
   const identifiers = root.find(j.Identifier)
-  // console.log(identifiers)
   identifiers.filter(idPath => {
     return edit.includes(idPath.value.name)
   }).replaceWith((p) => Object.assign({}, p.node, {
