@@ -27,3 +27,9 @@ test("example with decimal", async () => {
   const result = await testRunner(fixturePath, options)
   expect(result.stdout).toMatchSnapshot();
 });
+
+test("js example with decimal", async () => {
+  const fixturePath = path.join(__dirname, "./__fixtures__/decimal.input.js")
+  const result = await testRunner(fixturePath, options)
+  expect(result.stdout).toMatchSnapshot();
+});

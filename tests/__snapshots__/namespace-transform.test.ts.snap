@@ -325,6 +325,28 @@ main().catch((e) => {
 
 `;
 
+exports[`js example with decimal 1`] = `
+import { PrismaClient, Prisma } from '@prisma/client';
+
+async function main() {
+  const prisma = new PrismaClient()
+
+  const a = await prisma.a.findFirst()
+  const b = await prisma.b.findFirst({
+    where: {
+      decFloat: new Prisma.Decimal('1.23')
+    }
+  })
+  const c = await prisma.c.findFirst()
+  const d = await prisma.d.findFirst()
+  const e = await prisma.e.findFirst()
+
+}
+
+main()
+
+`;
+
 exports[`minimal example 1`] = `
 import { Prisma, PrismaClient } from '@prisma/client'
 import * as fs from 'fs'
