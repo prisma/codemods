@@ -24,7 +24,7 @@ export default class Namespace extends Command {
       if(result.dirty || result.untracked){
         this.log("You have uncommitted changes. Please commit any changes before running this codemod")
       }
-      else if(args.files){
+      else if(args.dir){
         this.log(`Performing namespace transform in files ${args.dir} ${flags.write ? '' : 'in dry mode'}`)
         const runner = buildRunner(transform)
         const result = await runner(args.dir, {debug: flags.debug, dry: !flags.write})
