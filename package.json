@@ -9,10 +9,9 @@
     "codemods": "bin/run"
   },
   "scripts": {
-    "postinstall": "npm run build",
     "watch": "tsc -w",
-    "test": "npm run build && jest",
-    "build": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme"
+    "test": "jest",
+    "build": "tsc -b && oclif-dev manifest && oclif-dev readme"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",
@@ -47,7 +46,7 @@
   "main": "lib/index.js",
   "oclif": {
     "commands": "./lib/commands",
-    "bin": "@prisma/codemods",
+    "bin": "codemods",
     "plugins": [
       "@oclif/plugin-help"
     ]
