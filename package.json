@@ -11,7 +11,8 @@
   "scripts": {
     "watch": "tsc -w",
     "test": "jest",
-    "build": "tsc -b && oclif-dev manifest && oclif-dev readme"
+    "update-cli": "oclif-dev manifest && oclif-dev readme",
+    "build": "tsc -b"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.2",
