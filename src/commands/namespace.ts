@@ -5,7 +5,7 @@ import * as git from '../utils/git'
 const transform =  require.resolve("../transforms/namespace");
 
 export default class Namespace extends Command {
-  static description = 'Codemod from namespace change'
+  static description = 'Codemod for @prisma/client namespace change'
 
   static flags = {
     help: flags.help({char: 'h'}),
