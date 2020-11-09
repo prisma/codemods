@@ -84,20 +84,18 @@ function handleRequire(root: Collection, j: JSCodeshift) {
   return edit;
 }
 export default function transform(file: FileInfo, api: API, options: Options) {
-  console.log("Running");
   const j = api.jscodeshift;
   // Convert the entire file source into a collection of nodes paths.
   const root = j(file.source);
 
   const importEdits = handleImports(root, j)
   const requireEdits = handleRequire(root, j);
-  
+
   const all = importEdits.concat(requireEdits);
 
   const edit = all.filter(function(elem, pos) {
     return all.indexOf(elem) == pos;
   })
-  console.log(edit);
   const identifiers = root.find(j.Identifier);
   identifiers
     .filter((idPath) => {
