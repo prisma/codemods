@@ -24,9 +24,10 @@ export function run(
     "--parser=ts",
     paths,
   ]
+  const jscodeshiftExecutable = require.resolve('.bin/jscodeshift')
   // console.log(args);
   return execa(
-    path.join(__dirname, "..", "..", "node_modules", ".bin", "jscodeshift"),
+    jscodeshiftExecutable,
     args,
     {
       encoding: "utf8",
