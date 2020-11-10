@@ -13,8 +13,8 @@
     "test": "jest",
     "stable": "dripip stable",
     "preview": "dripip preview",
-    "update-cli": "oclif-dev manifest && oclif-dev readme",
-    "build": "tsc -b"
+    "build": "tsc -b && oclif-dev manifest",
+    "prepublish": "yarn build"
   },
   "devDependencies": {
     "@oclif/dev-cli": "1.22.2",
