@@ -2,7 +2,7 @@
   "name": "@prisma/codemods",
   "version": "0.0.0",
   "description": "A collection of codemods for prisma",
-  "repository": "git@github.com:prisma/codemods.git",
+  "repository": "https://github.com/prisma-labs/dripip.git",
   "author": "William Luke <luke@prisma.io>",
   "license": "MIT",
   "bin": {
