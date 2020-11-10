@@ -11,6 +11,8 @@
   "scripts": {
     "watch": "tsc -w",
     "test": "jest",
+    "stable": "dripip stable",
+    "preview": "dripip preview",
     "update-cli": "oclif-dev manifest && oclif-dev readme",
     "build": "tsc -b"
   },
