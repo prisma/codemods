@@ -536,7 +536,7 @@ main().catch((e) => {
 
 `;
 
-exports[`project minimal 1`] = `
+exports[`projects minimal 1`] = `
 import { PrismaClient, Prisma } from './generated/client';
 
 // tslint:disable
