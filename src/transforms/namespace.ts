@@ -8,15 +8,18 @@ import {
   Options,
   StringLiteral,
 } from "jscodeshift";
-
+const IMPORT_PATH = process.env.PRISMA_IMPORT_PATH!
 function handleImports(root: Collection, j: JSCodeshift) {
   let edit: string[] = [];
+  if(!process.env.PRISMA_IMPORT_PATH){
+    throw new Error("No Import Path defined")
+  }
   const prismaImport = root.find(j.ImportDeclaration).filter((nodePath) => {
     // console.log(nodePath.node.source.value);
     return (
       Boolean(nodePath.node.source.value) &&
       typeof nodePath.node.source.value === "string" &&
-      nodePath.node.source.value.includes("@prisma/client")
+      nodePath.node.source.value.includes(IMPORT_PATH)
     );
   });
   const specifiers = prismaImport
@@ -61,7 +64,8 @@ function handleRequire(root: Collection, j: JSCodeshift) {
       const value = ((path.node.init as CallExpression)
         .arguments[0] as StringLiteral).value;
       // console.log(value);
-      if (value.includes("@prisma/client")) {
+      console.log({IMPORT_PATH});
+      if (value.includes(IMPORT_PATH)) {
         let variableDeclarator = j(path);
         // console.log(path.node.id);
         const properties = variableDeclarator

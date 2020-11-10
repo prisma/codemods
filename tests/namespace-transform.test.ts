@@ -1,36 +1,36 @@
 import path from "path";
-import { buildRunner } from "../src/utils/runner";
+import fs from 'fs';
 
+import { buildRunner, Options } from "../src/utils/runner";
+import { getImportPath } from "../src/utils/getImportPath"
 const transform = require.resolve("../lib/transforms/namespace");
 const testRunner = buildRunner(transform)
-const options = {dry: true, debug: false}
+const options: Options = {dry: true, debug: false, print: true, runInBand: true}
 
-test("minimal example", async () => {
-  const fixturePath = path.join(__dirname, "./__fixtures__/namespace.input.ts")
-  const result = await testRunner(fixturePath, options)
-  expect(result.stdout).toMatchSnapshot();
-});
+// describe('inputs', () => {
+//   const inputsDir = path.join(__dirname, "./__fixtures__/inputs")
+//   const files = fs.readdirSync(inputsDir)
+//   for (const file of files) {
+//     test(path.basename(file), async () => {
+//       const filePath = path.join(inputsDir, file);
+//       const result = await testRunner(filePath, options)
+//       expect(result.stdout).toMatchSnapshot();
+//     });
+//   }
+// })
 
-test("example with sql", async () => {
-  const fixturePath = path.join(__dirname, "./__fixtures__/sql.input.ts")
-  const result = await testRunner(fixturePath, options)
-  expect(result.stdout).toMatchSnapshot();
-});
+describe('project', () => {
+  const inputsDir = path.join(__dirname, "./__fixtures__/projects")
 
-test("example with error classes", async () => {
-  const fixturePath = path.join(__dirname, "./__fixtures__/errorImports.input.ts")
-  const result = await testRunner(fixturePath, options)
-  expect(result.stdout).toMatchSnapshot();
-});
+  const projects = fs.readdirSync(inputsDir)
 
-test("example with decimal", async () => {
-  const fixturePath = path.join(__dirname, "./__fixtures__/decimal.input.ts")
-  const result = await testRunner(fixturePath, options)
-  expect(result.stdout).toMatchSnapshot();
-});
-
-test("js example with decimal", async () => {
-  const fixturePath = path.join(__dirname, "./__fixtures__/decimal.input.js")
-  const result = await testRunner(fixturePath, options)
-  expect(result.stdout).toMatchSnapshot();
-});
+  for (const projectName of projects) {
+    test(projectName, async () => {
+      const projectDir = path.join(inputsDir,projectName)
+      const importPath = await getImportPath(projectDir)
+      process.env.PRISMA_IMPORT_PATH = importPath
+      const result = await testRunner(projectDir, options)
+      expect(result.stdout).toMatchSnapshot();
+    });
+  }
+})
