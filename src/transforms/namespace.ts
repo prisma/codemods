@@ -63,8 +63,6 @@ function handleRequire(root: Collection, j: JSCodeshift) {
     .forEach((path) => {
       const value = ((path.node.init as CallExpression)
         .arguments[0] as StringLiteral).value;
-      // console.log(value);
-      console.log({IMPORT_PATH});
       if (value.includes(IMPORT_PATH)) {
         let variableDeclarator = j(path);
         // console.log(path.node.id);

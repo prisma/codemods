@@ -16,6 +16,7 @@ export default class Namespace extends Command {
       description: "Write to files",
       default: false,
     }),
+    schemaPath: flags.string({ char: "s", description: "Schema Path" }),
     debug: flags.boolean({ char: "d", description: "Debug", default: false }),
   };
 
@@ -32,16 +33,18 @@ export default class Namespace extends Command {
             flags.write ? "" : "in dry mode"
           }`
         );
-        const importPath = await getImportPath(args.dir)
+        const importPath = await getImportPath(flags.schemaPath, args.dir)
         process.env.PRISMA_IMPORT_PATH = importPath
         const runner = buildRunner(transform);
         const result = await runner(args.dir, {
           debug: flags.debug,
           dry: !flags.write,
         });
+
         console.log(result.stdout);
-        console.log(result.stderr);
       }
     }
+    // process.exit()
   }
+  
 }

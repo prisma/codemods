@@ -7,19 +7,21 @@ const transform = require.resolve("../lib/transforms/namespace");
 const testRunner = buildRunner(transform)
 const options: Options = {dry: true, debug: false, print: true, runInBand: true}
 
-// describe('inputs', () => {
-//   const inputsDir = path.join(__dirname, "./__fixtures__/inputs")
-//   const files = fs.readdirSync(inputsDir)
-//   for (const file of files) {
-//     test(path.basename(file), async () => {
-//       const filePath = path.join(inputsDir, file);
-//       const result = await testRunner(filePath, options)
-//       expect(result.stdout).toMatchSnapshot();
-//     });
-//   }
-// })
+describe('inputs', () => {
+  const inputsDir = path.join(__dirname, "./__fixtures__/inputs")
+  const files = fs.readdirSync(inputsDir)
+  for (const file of files) {
+    test(path.basename(file), async () => {
+      const filePath = path.join(inputsDir, file);
+      const importPath = await getImportPath()
+      process.env.PRISMA_IMPORT_PATH = importPath
+      const result = await testRunner(filePath, options)
+      expect(result.stdout).toMatchSnapshot();
+    });
+  }
+})
 
-describe('project', () => {
+describe('projects', () => {
   const inputsDir = path.join(__dirname, "./__fixtures__/projects")
 
   const projects = fs.readdirSync(inputsDir)
@@ -27,7 +29,7 @@ describe('project', () => {
   for (const projectName of projects) {
     test(projectName, async () => {
       const projectDir = path.join(inputsDir,projectName)
-      const importPath = await getImportPath(projectDir)
+      const importPath = await getImportPath(undefined, projectDir)
       process.env.PRISMA_IMPORT_PATH = importPath
       const result = await testRunner(projectDir, options)
       expect(result.stdout).toMatchSnapshot();

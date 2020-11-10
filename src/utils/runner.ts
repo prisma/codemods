@@ -12,7 +12,6 @@ export function run(
   paths: string,
   options: Options 
 ) {
-  const importPath = process.env.PRISMA_IMPORT_PATH
   const args =  [
     options.dry ? "--dry" : "",
     options.debug ? "--verbose=2" : "",
@@ -25,7 +24,7 @@ export function run(
     "--parser=ts",
     paths,
   ]
-  console.log(args);
+  // console.log(args);
   return execa(
     path.join(__dirname, "..", "..", "node_modules", ".bin", "jscodeshift"),
     args,
