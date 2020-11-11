@@ -58,4 +58,7 @@ typings/
 # dotenv environment variables file
 .env
 
-oclif.manifest.json
+*.d.ts
+*.js
+*.js.map
+!tests/**/*.js

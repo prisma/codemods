@@ -16,9 +16,8 @@ import isGitClean from "is-git-clean";
 import meow from "meow";
 import path from "path";
 import { getImportPath } from "../utils/getImportPath";
+import { jscodeshiftExecutable, runTransform, transformerDirectory } from "../utils/runner";
 
-const transformerDirectory = path.join(__dirname, "../", "transforms");
-const jscodeshiftExecutable = require.resolve(".bin/jscodeshift");
 
 function checkGitStatus(force) {
   let clean = false;
@@ -50,47 +49,6 @@ function checkGitStatus(force) {
   }
 }
 
-function runTransform({ files, flags, transformer,importPath }) {
-  const transformerPath = path.join(transformerDirectory, `${transformer}.js`);
-
-  let args = [];
-
-  const { dry, print } = flags;
-
-  if (dry) {
-    args.push("--dry");
-  }
-  if (print) {
-    args.push("--print");
-  }
-
-  args.push("--verbose=2");
-
-  args.push("--ignore-pattern=**/node_modules/**");
-  args.push(`--ignore-pattern=**/${importPath}/**`);
-  // TODO Check TSX parser
-  args.push("--extensions=ts,js");
-  args.push("--parser=ts");
-
-  args = args.concat(["--transform", transformerPath]);
-
-  if (flags.jscodeshift) {
-    args = args.concat(flags.jscodeshift);
-  }
-
-  args = args.concat(files);
-
-  console.log(`Executing command: jscodeshift ${args.join(" ")}`);
-
-  const result = execa.sync(jscodeshiftExecutable, args, {
-    stdio: "inherit",
-    stripFinalNewline: false,
-  });
-
-  if (result.stderr) {
-    throw result.stderr;
-  }
-}
 
 const TRANSFORMER_INQUIRER_CHOICES = [
   {
@@ -136,6 +94,9 @@ function run() {
         },
         print: {
           alias: "p",
+          type: "boolean",
+        },
+        runInBand: {
           type: "boolean",
         },
         help: {
@@ -195,7 +156,7 @@ function run() {
         );
         return null;
       }
-      const importPath = await getImportPath(cli.flags.schemaPath, cli.input[1]);
+      const importPath = await getImportPath(cli.flags.schemaPath, filesBeforeExpansion);
       process.env.PRISMA_IMPORT_PATH = importPath;
       return runTransform({
         files: filesExpanded,

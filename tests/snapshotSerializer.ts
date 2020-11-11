@@ -15,7 +15,7 @@ const serializer = {
 function cleanLogs(logs: string): string {
   const clean = stripAnsi(logs)
 
-  return clean.split('\n').slice(2, -7).join('\n')
+  return clean.split('\n').slice(2, -8).join('\n')
 }
 
 module.exports = serializer
