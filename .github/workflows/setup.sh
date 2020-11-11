@@ -1,1 +1,0 @@
-echo $NPM_TOKEN > ~/.npmrc
