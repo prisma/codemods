@@ -1,60 +1,43 @@
 {
   "name": "@prisma/codemods",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A collection of codemods for prisma",
   "repository": "https://github.com/prisma-labs/dripip.git",
   "author": "William Luke <luke@prisma.io>",
   "license": "MIT",
-  "bin": {
-    "codemods": "bin/run"
-  },
+  "bin": "./bin/prisma-codemod.js",
   "scripts": {
-    "watch": "tsc -w",
-    "test": "jest",
-    "stable": "dripip stable",
-    "preview": "dripip preview",
-    "build": "tsc -b && oclif-dev manifest",
-    "prepublish": "yarn build"
+    "watch": "yarn tsc -d -w -p tsconfig.json",
+    "prepublish": "yarn build",
+    "build": "yarn tsc -d -p tsconfig.json",
+    "test": "jest"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "1.22.2",
-    "@types/debug": "4.1.5",
     "@types/jest": "26.0.15",
     "@types/jscodeshift": "0.7.1",
-    "@types/node": "14.14.6",
-    "dripip": "0.10.0",
-    "execa": "4.1.0",
+    "@types/node": "14.14.7",
     "jest": "26.6.3",
     "prettier": "2.1.2",
     "strip-ansi": "6.0.0",
-    "ts-jest": "26.4.3",
+    "ts-jest": "26.4.4",
     "typescript": "4.0.5"
   },
   "dependencies": {
-    "@oclif/command": "1.8.0",
-    "@oclif/config": "1.17.0",
-    "@oclif/plugin-help": "3.2.0",
-    "@prisma/sdk": "2.10.2",
-    "debug": "2.6.9",
-    "jscodeshift": "0.11.0",
-    "tslib": "2.0.3"
+    "chalk": "4.1.0",
+    "execa": "4.1.0",
+    "globby": "11.0.1",
+    "inquirer": "7.3.3",
+    "is-git-clean": "1.1.0",
+    "meow": "8.0.0",
+    "@prisma/sdk": "2.11.0",
+    "jscodeshift": "0.11.0"
   },
   "engines": {
     "node": ">=10.0.0"
   },
   "files": [
-    "/bin",
-    "/lib",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
-  ],
-  "main": "lib/index.js",
-  "oclif": {
-    "commands": "./lib/commands",
-    "bin": "codemods",
-    "plugins": [
-      "@oclif/plugin-help"
-    ]
-  },
-  "types": "lib/index.d.ts"
+    "transforms/*.js",
+    "bin/*.js",
+    "utils/*.js"
+  ]
 }

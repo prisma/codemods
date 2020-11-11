@@ -1,8 +1,8 @@
 import path from "path";
 import fs from 'fs';
 
-import { buildRunner, Options } from "../src/utils/runner";
-import { getImportPath } from "../src/utils/getImportPath"
+import { buildRunner, Options } from "../utils/runner";
+import { getImportPath } from "../utils/getImportPath"
 const transform = require.resolve("../lib/transforms/namespace");
 const testRunner = buildRunner(transform)
 const options: Options = {dry: true, debug: false, print: true, runInBand: true}
