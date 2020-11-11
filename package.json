@@ -1,6 +1,6 @@
 {
   "name": "@prisma/codemods",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A collection of codemods for prisma",
   "repository": "https://github.com/prisma-labs/dripip.git",
   "author": "William Luke <luke@prisma.io>",
