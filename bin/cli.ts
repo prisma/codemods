@@ -70,7 +70,7 @@ function run() {
   const cli = meow(`
   Usage
     $ npx @prisma/codemods <transform> <path> <...options>
-      transform    One of the choices from https://github.com/prisma/codemods/tree/main
+      transform    One of the choices from https://github.com/prisma/codemods#transforms
       path         Files or directory to your app. Can be a glob like src/**.ts
   Options
     --force            Bypass Git safety checks and forcibly run codemods
@@ -78,6 +78,7 @@ function run() {
     --print            Print transformed files to your terminal
 `,
     {
+      
       autoHelp: true,
       flags: {
         schemaPath: {
