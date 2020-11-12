@@ -17,7 +17,7 @@ export function runTransform({
   importPath,
   testMode
 }: {
-  files: string;
+  files: string | string[];
   transformer: string;
   importPath: string;
   flags: { dry: boolean; print: boolean, runInBand: boolean };

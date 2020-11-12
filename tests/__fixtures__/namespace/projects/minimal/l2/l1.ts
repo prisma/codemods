@@ -10,7 +10,7 @@ import {
   empty,
   raw,
   Sql
-} from '../generated/client'
+} from '@prisma/client'
 
 // tslint:disable
 

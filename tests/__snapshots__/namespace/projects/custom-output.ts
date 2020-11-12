@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`namespace projects minimal 1`] = `
-import { PrismaClient, Prisma } from '@prisma/client';
+exports[`namespace projects custom-output 1`] = `
+import { PrismaClient, Prisma } from './generated/client';
 
 // tslint:disable
 
@@ -279,7 +279,7 @@ main().catch((e) => {
   console.error(e)
 })
 
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Prisma } from '../generated/client';
 
 // tslint:disable
 

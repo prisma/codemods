@@ -57,7 +57,7 @@ const TRANSFORMER_INQUIRER_CHOICES = [
   },
 ];
 
-function expandFilePathsIfNeeded(filesBeforeExpansion) {
+function expandFilePathsIfNeeded(filesBeforeExpansion: string[]): string[] {
   const shouldExpandFiles = filesBeforeExpansion.some((file) =>
     file.includes("*")
   );
@@ -78,7 +78,7 @@ function run() {
     --print            Print transformed files to your terminal
 `,
     {
-      
+
       autoHelp: true,
       flags: {
         schemaPath: {

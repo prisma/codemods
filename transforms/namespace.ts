@@ -8,14 +8,16 @@ import {
   Options,
   StringLiteral,
 } from "jscodeshift";
-const IMPORT_PATH = process.env.PRISMA_IMPORT_PATH!
+const IMPORT_PATH = process.env.PRISMA_IMPORT_PATH!;
+const RESERVED = ["PrismaClient", "Prisma"];
 function handleImports(root: Collection, j: JSCodeshift) {
   let edit: string[] = [];
-  if(!process.env.PRISMA_IMPORT_PATH){
-    throw new Error("No Import Path defined")
+  let shouldAddImport = true
+
+  if (!process.env.PRISMA_IMPORT_PATH) {
+    throw new Error("No Import Path defined");
   }
   const prismaImport = root.find(j.ImportDeclaration).filter((nodePath) => {
-    // console.log(nodePath.node.source.value);
     return (
       Boolean(nodePath.node.source.value) &&
       typeof nodePath.node.source.value === "string" &&
@@ -25,19 +27,24 @@ function handleImports(root: Collection, j: JSCodeshift) {
   const specifiers = prismaImport
     .find(j.ImportSpecifier)
     .filter((nPath) => {
-      if (nPath.value.local && nPath.value.local.name !== "PrismaClient") {
+      if(nPath.value.local && nPath.value.local.name === 'Prisma'){
+        shouldAddImport = false
+      }
+      if (nPath.value.local && !RESERVED.includes(nPath.value.local.name)) {
         edit.push(nPath.value.local.name);
         return true;
       }
       return false;
     })
     .remove();
-
-  specifiers.at(0).insertBefore(j.importSpecifier(j.identifier("Prisma")));
+  if(edit.length > 0 && shouldAddImport){
+    specifiers.at(0).insertBefore(j.importSpecifier(j.identifier("Prisma")));
+  }
   return edit;
 }
 function handleRequire(root: Collection, j: JSCodeshift) {
   let edit: string[] = [];
+  let shouldAddImport = true
   // console.log("Running");
   root
     .find(j.VariableDeclarator)
@@ -74,13 +81,18 @@ function handleRequire(root: Collection, j: JSCodeshift) {
             return propertyPath.node.key.type === "Identifier";
           })
           .forEach((property) => {
+            if((property.value.key as Identifier).name === 'Prisma') {
+              shouldAddImport = false
+            } 
             // console.log(property);
-            if ((property.value.key as Identifier).name !== "PrismaClient") {
+            if (!RESERVED.includes((property.value.key as Identifier).name)) {
               edit.push((property.value.key as Identifier).name);
               j(property).remove();
             }
           });
-        properties.at(0).insertBefore(j.identifier("Prisma"));
+        if(edit.length > 0 && shouldAddImport){
+          properties.at(0).insertBefore(j.identifier("Prisma"));
+        }
       }
     });
   return edit;
@@ -90,14 +102,14 @@ export default function transform(file: FileInfo, api: API, options: Options) {
   // Convert the entire file source into a collection of nodes paths.
   const root = j(file.source);
 
-  const importEdits = handleImports(root, j)
+  const importEdits = handleImports(root, j);
   const requireEdits = handleRequire(root, j);
 
   const all = importEdits.concat(requireEdits);
 
-  const edit = all.filter(function(elem, pos) {
+  const edit = all.filter(function (elem, pos) {
     return all.indexOf(elem) == pos;
-  })
+  });
   const identifiers = root.find(j.Identifier);
   identifiers
     .filter((idPath) => {
