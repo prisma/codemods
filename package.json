@@ -4,7 +4,7 @@
   "description": "A collection of codemods for prisma",
   "repository": "https://github.com/prisma-labs/dripip.git",
   "author": "William Luke <luke@prisma.io>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bin": "./bin/prisma-codemod.js",
   "scripts": {
     "watch": "yarn tsc -d -w -p tsconfig.json",
