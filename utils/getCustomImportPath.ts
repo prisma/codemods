@@ -36,7 +36,7 @@ export async function getTopLevelExports(datamodel: string){
   const inputs = getModelNames(schema.inputObjectTypes.model)
   const outputs = getModelNames(schema.outputObjectTypes.model)
   const enums = getModelNames(schema.enumTypes.model)
-  const expts = [...inputs, ...outputs, ...enums]
+  const expts = [...inputs, ...outputs, ...enums].filter((v, i, a) => a.indexOf(v) === i);
   const filePath = tempy.writeSync(expts.join(','))
   return filePath
 }

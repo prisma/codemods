@@ -113,6 +113,7 @@ export default function transform(file: FileInfo, api: API, options: Options) {
     const data = fs.readFileSync(process.env.PRISMA_TOP_LEVEL_EXPORTS_FILE, {encoding: 'utf8'})
     const topLevelExports = data.split(',')
     RESERVED.push(...topLevelExports)
+    RESERVED = RESERVED.filter((v, i, a) => a.indexOf(v) === i);
   }
   const j = api.jscodeshift;
   // Convert the entire file source into a collection of nodes paths.
