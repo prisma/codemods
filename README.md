@@ -37,7 +37,7 @@ yarn && yarn watch
 In a separate terminal you can then run
 
 ```shell
-node ./bin/prisma-codemod.js namespace ./tests/__fixtures__/projects/minimal/ -f -d -p
+yarn cli --help
 ```
 
 ### Testing

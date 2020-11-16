@@ -9,15 +9,16 @@
 // @next/codemod optional-name-of-transform optional/path/to/src [...options]
 
 import chalk from "chalk";
-import execa from "execa";
 import globby from "globby";
 import inquirer from "inquirer";
 import isGitClean from "is-git-clean";
 import meow from "meow";
-import path from "path";
-import { getImportPath } from "../utils/getImportPath";
-import { jscodeshiftExecutable, runTransform, transformerDirectory } from "../utils/runner";
-
+import { getCustomImportPath } from "../utils/getCustomImportPath";
+import {
+  jscodeshiftExecutable,
+  runTransform,
+  transformerDirectory,
+} from "../utils/runner";
 
 function checkGitStatus(force) {
   let clean = false;
@@ -49,7 +50,6 @@ function checkGitStatus(force) {
   }
 }
 
-
 const TRANSFORMER_INQUIRER_CHOICES = [
   {
     name: "namespace: Codemod for @prisma/client namespace change",
@@ -67,7 +67,8 @@ function expandFilePathsIfNeeded(filesBeforeExpansion: string[]): string[] {
 }
 
 function run() {
-  const cli = meow(`
+  const cli = meow(
+    `
   Usage
     $ npx @prisma/codemods <transform> <path> <...options>
       transform    One of the choices from https://github.com/prisma/codemods#transforms
@@ -78,13 +79,12 @@ function run() {
     --print            Print transformed files to your terminal
 `,
     {
-
       autoHelp: true,
       flags: {
         schemaPath: {
           type: "string",
-          isRequired: false
-        }, 
+          isRequired: false,
+        },
         force: {
           alias: "f",
           type: "boolean",
@@ -157,12 +157,14 @@ function run() {
         );
         return null;
       }
-      const importPath = await getImportPath(cli.flags.schemaPath, filesBeforeExpansion);
-      process.env.PRISMA_IMPORT_PATH = importPath;
+      process.env.PRISMA_CUSTOM_IMPORT_PATH = await getCustomImportPath({
+        schemaPathFromArgs: cli.flags.schemaPath,
+        cwd: filesBeforeExpansion,
+      });
       return runTransform({
         files: filesExpanded,
         flags: cli.flags,
-        importPath: importPath,
+        customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
         transformer: selectedTransformer,
       });
     });

@@ -14,12 +14,12 @@ export function runTransform({
   files,
   flags,
   transformer,
-  importPath,
+  customImportPath,
   testMode
 }: {
   files: string | string[];
   transformer: string;
-  importPath: string;
+  customImportPath?: string;
   flags: { dry: boolean; print: boolean, runInBand: boolean };
   testMode?: boolean
 }) {
@@ -43,7 +43,7 @@ export function runTransform({
   }
 
   args.push("--ignore-pattern=**/node_modules/**");
-  args.push(`--ignore-pattern=**/${importPath}/**`);
+  customImportPath && args.push(`--ignore-pattern=**/${customImportPath}/**`);
   // TODO Check TSX parser
   args.push("--extensions=ts,js");
   args.push("--parser=ts");

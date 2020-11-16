@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { getImportPath } from "../../utils/getImportPath";
+import { getCustomImportPath } from "../../utils/getCustomImportPath";
 import { runTransform } from "../../utils/runner";
 import { serializer } from "./snapshotSerializer";
 require('jest-specific-snapshot');
@@ -25,11 +25,10 @@ export function buildTest(transformer: string) {
     for (const file of files) {
       test(path.basename(file), async () => {
         const filePath = path.join(inputsDir, file);
-        const importPath = await getImportPath();
-        process.env.PRISMA_IMPORT_PATH = importPath;
+        process.env.PRISMA_CUSTOM_IMPORT_PATH = await getCustomImportPath();
         const result = await runTransform({
           files: filePath,
-          importPath,
+          customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer,
           ...TEST_OPTIONS,
         });
@@ -45,11 +44,10 @@ export function buildTest(transformer: string) {
     for (const projectName of projects) {
       test(projectName, async () => {
         const projectDir = path.join(projectsDir, projectName);
-        const importPath = await getImportPath(undefined, projectDir);
-        process.env.PRISMA_IMPORT_PATH = importPath;
+        process.env.PRISMA_CUSTOM_IMPORT_PATH = await getCustomImportPath({cwd: projectDir});
         const result = await runTransform({
           files: projectDir,
-          importPath,
+          customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer: transformer,
           ...TEST_OPTIONS,
         });
