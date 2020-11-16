@@ -8,22 +8,22 @@ import {
   Options,
   StringLiteral,
 } from "jscodeshift";
+import fs from "fs"
+let RESERVED = ["PrismaClient", "Prisma"];
 
-const RESERVED = ["PrismaClient", "Prisma"];
-
-function isPrismaImport(value: string){
-  const prismaPaths = ['.prisma/client', '@prisma/client'];
-  if(process.env.PRISMA_CUSTOM_IMPORT_PATH){
-    prismaPaths.push(process.env.PRISMA_CUSTOM_IMPORT_PATH)
+function isPrismaImport(value: string) {
+  const prismaPaths = [".prisma/client", "@prisma/client"];
+  if (process.env.PRISMA_CUSTOM_IMPORT_PATH) {
+    prismaPaths.push(process.env.PRISMA_CUSTOM_IMPORT_PATH);
   }
-  return prismaPaths.some((p => {
-    return value.includes(p)
-  }))
+  return prismaPaths.some((p) => {
+    return value.includes(p);
+  });
 }
 
 function handleImports(root: Collection, j: JSCodeshift) {
   let edit: string[] = [];
-  let shouldAddImport = true
+  let shouldAddImport = true;
 
   const prismaImport = root.find(j.ImportDeclaration).filter((nodePath) => {
     return (
@@ -32,11 +32,12 @@ function handleImports(root: Collection, j: JSCodeshift) {
       isPrismaImport(nodePath.node.source.value)
     );
   });
+
   const specifiers = prismaImport
     .find(j.ImportSpecifier)
     .filter((nPath) => {
-      if(nPath.value.local && nPath.value.local.name === 'Prisma'){
-        shouldAddImport = false
+      if (nPath.value.local && nPath.value.local.name === "Prisma") {
+        shouldAddImport = false;
       }
       if (nPath.value.local && !RESERVED.includes(nPath.value.local.name)) {
         edit.push(nPath.value.local.name);
@@ -45,14 +46,16 @@ function handleImports(root: Collection, j: JSCodeshift) {
       return false;
     })
     .remove();
-  if(edit.length > 0 && shouldAddImport){
+
+  if (edit.length > 0 && shouldAddImport) {
     specifiers.at(0).insertBefore(j.importSpecifier(j.identifier("Prisma")));
   }
   return edit;
 }
+
 function handleRequire(root: Collection, j: JSCodeshift) {
   let edit: string[] = [];
-  let shouldAddImport = true
+  let shouldAddImport = true;
   // console.log("Running");
   root
     .find(j.VariableDeclarator)
@@ -89,16 +92,16 @@ function handleRequire(root: Collection, j: JSCodeshift) {
             return propertyPath.node.key.type === "Identifier";
           })
           .forEach((property) => {
-            if((property.value.key as Identifier).name === 'Prisma') {
-              shouldAddImport = false
-            } 
+            if ((property.value.key as Identifier).name === "Prisma") {
+              shouldAddImport = false;
+            }
             // console.log(property);
             if (!RESERVED.includes((property.value.key as Identifier).name)) {
               edit.push((property.value.key as Identifier).name);
               j(property).remove();
             }
           });
-        if(edit.length > 0 && shouldAddImport){
+        if (edit.length > 0 && shouldAddImport) {
           properties.at(0).insertBefore(j.identifier("Prisma"));
         }
       }
@@ -106,6 +109,11 @@ function handleRequire(root: Collection, j: JSCodeshift) {
   return edit;
 }
 export default function transform(file: FileInfo, api: API, options: Options) {
+  if(process.env.PRISMA_TOP_LEVEL_EXPORTS_FILE){
+    const data = fs.readFileSync(process.env.PRISMA_TOP_LEVEL_EXPORTS_FILE, {encoding: 'utf8'})
+    const topLevelExports = data.split(',')
+    RESERVED.push(...topLevelExports)
+  }
   const j = api.jscodeshift;
   // Convert the entire file source into a collection of nodes paths.
   const root = j(file.source);

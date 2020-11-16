@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`namespace projects minimal 1`] = `
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Post, User, Prisma } from '@prisma/client';
 
 // tslint:disable
 
@@ -95,7 +95,7 @@ async function main() {
     published: boolean
     title: string
     content: string | null
-    author: Prisma.User | null
+    author: User | null
   } | null = await prisma.post.findOne({
     where: {
       id: '',
@@ -128,7 +128,7 @@ async function main() {
     },
   })
 
-  const result5: Prisma.Post = await prisma.post.create({
+  const result5: Post = await prisma.post.create({
     data: {
       published: false,
       title: 'Title',
@@ -279,7 +279,7 @@ main().catch((e) => {
   console.error(e)
 })
 
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient, Post, User, Prisma } from '@prisma/client';
 
 // tslint:disable
 
@@ -373,7 +373,7 @@ async function main() {
     published: boolean
     title: string
     content: string | null
-    author: Prisma.User | null
+    author: User | null
   } | null = await prisma.post.findOne({
     where: {
       id: '',
@@ -406,7 +406,7 @@ async function main() {
     },
   })
 
-  const result5: Prisma.Post = await prisma.post.create({
+  const result5: Post = await prisma.post.create({
     data: {
       published: false,
       title: 'Title',

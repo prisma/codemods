@@ -3,8 +3,8 @@ import path from "path";
 import { getCustomImportPath } from "../../utils/getCustomImportPath";
 import { runTransform } from "../../utils/runner";
 import { serializer } from "./snapshotSerializer";
-require('jest-specific-snapshot');
-const addSerializer = require('jest-specific-snapshot').addSerializer;
+import('jest-specific-snapshot');
+import { addSerializer } from 'jest-specific-snapshot';
 addSerializer(serializer)
 const TEST_OPTIONS = {
   flags: {
