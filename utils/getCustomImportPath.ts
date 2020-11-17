@@ -10,7 +10,7 @@ interface Options {
 }
 export async function getCustomImportPath(options?: Options){
   if(!options?.cwd){
-    return null
+    return ''
   }
   const schemaPath = await getSchemaPathInternal(options?.schemaPathFromArgs, {cwd: options.cwd})
   const datamodel = schemaPath && fs.readFileSync(schemaPath, {encoding: 'utf8'})
@@ -22,10 +22,10 @@ export async function getCustomImportPath(options?: Options){
     if(generator){
       const isCustom = generator?.output
       const customImportPath = isCustom && path.relative(options.cwd, generator.output)
-      return isCustom ? customImportPath.replace(/\.\.\//g, '') : null
+      return isCustom ? customImportPath.replace(/\.\.\//g, '') : ''
     }
   }
-  return null
+  return ''
 }
 function getModelNames(model: {name: string}[]){
   return model ? model.map(it => it.name): []
