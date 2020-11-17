@@ -55,6 +55,10 @@ const TRANSFORMER_INQUIRER_CHOICES = [
     name: "namespace: Codemod for @prisma/client namespace change",
     value: "namespace",
   },
+  {
+    name: "findUnique: Codemod for @prisma/client that converts findOne to findUnique",
+    value: "findUnique",
+  },
 ];
 
 function expandFilePathsIfNeeded(filesBeforeExpansion: string[]): string[] {
