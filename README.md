@@ -1,6 +1,8 @@
 # Prisma Codemods
 
-A collection of codemods for prisma
+![npm](https://img.shields.io/npm/v/@prisma/codemods?style=flat-square)
+
+A Collection of Codemods for Prisma
 
 ## Usage
 
@@ -22,10 +24,10 @@ Options
 
 ### Transforms
 
-| \<transform>  | Description                                          | Example                                                |
-| ------------- | ---------------------------------------------------- | ------------------------------------------------------ |
-| `namespace`   | Codemod for `@prisma/client` namespace change        | `npx @prisma/codemods namespace ./my-project`  |
-| `findUnique`  | Converts `prisma.x.findOne` to `prisma.x.findUnique` | `npx @prisma/codemods findUnique ./my-project` |
+| \<transform>  | Description                                          | Example                                         |
+| ------------- | ---------------------------------------------------- | ----------------------------------------------- |
+| `namespace`   | Codemod for `@prisma/client` namespace change        | `npx @prisma/codemods namespace ./my-project`   |
+| `findUnique`  | Converts `prisma.x.findOne` to `prisma.x.findUnique` | `npx @prisma/codemods findUnique ./my-project`  |
 | `update-2.12` | Includes `namespace` & `findUnique`                  | `npx @prisma/codemods update-2.12 ./my-project` |
 
 ## Development
