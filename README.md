@@ -24,9 +24,9 @@ Options
 
 | \<transform>  | Description                                          | Example                                                |
 | ------------- | ---------------------------------------------------- | ------------------------------------------------------ |
-| `namespace`   | Codemod for `@prisma/client` namespace change        | `npx @prisma/codemods namespace ./my-awesome-project`  |
-| `findUnique`  | Converts `prisma.x.findOne` to `prisma.x.findUnique` | `npx @prisma/codemods findUnique ./my-awesome-project` |
-| `update-2.12` | Includes `namespace` & `findUnique`                  | `npx @prisma/codemods update-2.12 ./my-awesome-project` |
+| `namespace`   | Codemod for `@prisma/client` namespace change        | `npx @prisma/codemods namespace ./my-project`  |
+| `findUnique`  | Converts `prisma.x.findOne` to `prisma.x.findUnique` | `npx @prisma/codemods findUnique ./my-project` |
+| `update-2.12` | Includes `namespace` & `findUnique`                  | `npx @prisma/codemods update-2.12 ./my-project` |
 
 ## Development
 
