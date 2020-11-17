@@ -10,7 +10,7 @@ $ npx @prisma/codemods <transform> <path> <...options>
 
 ```shell
   transform    One of the choices from https://github.com/prisma/codemods/#transforms
-  path         Files or directory to your app. e.g ./src/
+  path         Files or directory to your app. e.g ./my-awesome-project
 ```
 
 ```shell
@@ -24,8 +24,8 @@ Options
 
 | \<transform> | Description                                          | Example                                |
 | ------------ | ---------------------------------------------------- | -------------------------------------- |
-| `namespace`  | Codemod for `@prisma/client` namespace change        | `npx @prisma/codemods namespace ./src` |
-| `findUnique` | Converts `prisma.x.findOne` to `prisma.x.findUnique` | `npx @prisma/codemods findUnique ./src` |
+| `namespace`  | Codemod for `@prisma/client` namespace change        | `npx @prisma/codemods namespace ./my-awesome-project` |
+| `findUnique` | Converts `prisma.x.findOne` to `prisma.x.findUnique` | `npx @prisma/codemods findUnique ./my-awesome-project` |
 
 ## Development
 

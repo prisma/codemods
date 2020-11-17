@@ -76,9 +76,10 @@ function run() {
   Usage
     $ npx @prisma/codemods <transform> <path> <...options>
       transform    One of the choices from https://github.com/prisma/codemods#transforms
-      path         Files or directory to your app. Can be a glob like src/**.ts
+      path         Files or directory to your app. i.e ./my-awesome-project
   Options
     --force            Bypass Git safety checks and forcibly run codemods
+    --schemaPath       Specify a path to your ./prisma/schema.prisma
     --dry              Dry run (no changes are made to files)
     --print            Print transformed files to your terminal
 `,
