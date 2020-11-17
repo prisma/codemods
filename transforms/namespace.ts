@@ -140,4 +140,3 @@ export default function transform(file: FileInfo, api: API, options: Options) {
   return root.toSource();
 }
 
-export const parser = "ts";

@@ -41,12 +41,14 @@ export function runTransform({
   if(!testMode){
     args.push("--verbose=2");
   }
+  if(customImportPath){
+    args.push(`--ignore-pattern=**/${customImportPath}/**`);
+  }
 
   args.push("--ignore-pattern=**/node_modules/**");
-  customImportPath && args.push(`--ignore-pattern=**/${customImportPath}/**`);
   // TODO Check TSX parser
-  args.push("--extensions=ts,js");
-  args.push("--parser=ts");
+  args.push("--extensions=tsx,ts,js,tsx");
+  args.push("--parser=tsx");
 
   args = args.concat(["--transform", transformerPath]);
 
