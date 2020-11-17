@@ -12,4 +12,8 @@ function main(){
     }
   })
 }
+const findOne = 'findOne'
+const func = findOne()
+const obj = user.findOne()
+
 `;
