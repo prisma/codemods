@@ -3,9 +3,10 @@ import { addSerializer } from "jest-specific-snapshot";
 import path from "path";
 import { getCustomImportPath } from "../../utils/getCustomImportPath";
 import { runTransform } from "../../utils/runner";
-import { serializer } from "./snapshotSerializer";
+import { cleanLogs, serializer } from "./snapshotSerializer";
 import("jest-specific-snapshot");
 addSerializer(serializer);
+
 const TEST_OPTIONS = {
   flags: {
     dry: true,
@@ -16,6 +17,34 @@ const TEST_OPTIONS = {
 };
 const SNAPSHOT_DIR = path.join(__dirname, "..", "__snapshots__");
 const FIXTURES_DIR = path.join(__dirname, "..", "__fixtures__");
+
+async function run(transformer: string, filePath: string){
+  let result = '';
+  if(transformer === 'update-2.12'){
+    const namespace = await runTransform({
+      files: filePath,
+      customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
+      transformer: 'namespace',
+      ...TEST_OPTIONS,
+    });
+    const findUnique = await runTransform({
+      files: filePath,
+      customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
+      transformer: 'findUnique',
+      ...TEST_OPTIONS,
+    });
+    result = [namespace.stdout, findUnique.stdout ].join('\n')
+  } else {
+    const trans = await runTransform({
+      files: filePath,
+      customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
+      transformer,
+      ...TEST_OPTIONS,
+    });
+    result = trans.stdout
+  }
+  return result
+}
 export function buildTest(transformer: string) {
   const transformerFixtures = path.join(FIXTURES_DIR, transformer);
   const projectsDir = path.join(transformerFixtures, "projects");
@@ -27,12 +56,7 @@ export function buildTest(transformer: string) {
         test(path.basename(file), async () => {
           const filePath = path.join(inputsDir, file);
           process.env.PRISMA_CUSTOM_IMPORT_PATH = await getCustomImportPath();
-          const result = await runTransform({
-            files: filePath,
-            customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
-            transformer,
-            ...TEST_OPTIONS,
-          });
+          const result = await run(transformer, filePath)
           const snapshotFile = path.join(
             SNAPSHOT_DIR,
             transformer,
@@ -40,7 +64,7 @@ export function buildTest(transformer: string) {
             file
           );
           // @ts-ignore
-          expect(result.stdout).toMatchSpecificSnapshot(snapshotFile);
+          expect(result).toMatchSpecificSnapshot(snapshotFile);
         });
       }
     });
@@ -54,12 +78,7 @@ export function buildTest(transformer: string) {
           process.env.PRISMA_CUSTOM_IMPORT_PATH = await getCustomImportPath({
             cwd: projectDir,
           });
-          const result = await runTransform({
-            files: projectDir,
-            customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
-            transformer: transformer,
-            ...TEST_OPTIONS,
-          });
+          const result = await run(transformer, projectDir)
           const snapshotFile = path.join(
             SNAPSHOT_DIR,
             transformer,
@@ -67,7 +86,7 @@ export function buildTest(transformer: string) {
             `${projectName}.ts`
           );
           // @ts-ignore
-          expect(result.stdout).toMatchSpecificSnapshot(snapshotFile);
+          expect(result).toMatchSpecificSnapshot(snapshotFile);
         });
       }
     });

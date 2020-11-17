@@ -28,4 +28,5 @@ async function main() {
   prisma.$disconnect()
 }
 main()
+
 `;

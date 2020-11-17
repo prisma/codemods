@@ -38,7 +38,10 @@ export function runTransform({
   if (runInBand) {
     args.push("--run-in-band");
   }
-  if(!testMode){
+  if(testMode){
+    args.push("--silent")
+    
+  } else {
     args.push("--verbose=2");
   }
   if(customImportPath){

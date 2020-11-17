@@ -52,6 +52,10 @@ function checkGitStatus(force) {
 
 const TRANSFORMER_INQUIRER_CHOICES = [
   {
+    name: "update-2.12: Runs namespace and findUnique transform",
+    value: "update-2.12",
+  },
+  {
     name: "namespace: Codemod for @prisma/client namespace change",
     value: "namespace",
   },
@@ -166,12 +170,27 @@ function run() {
         schemaPathFromArgs: cli.flags.schemaPath,
         cwd: filesBeforeExpansion,
       });
-      return runTransform({
-        files: filesExpanded,
-        flags: cli.flags,
-        customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
-        transformer: selectedTransformer,
-      });
+      if(selectedTransformer === 'update-2.12'){
+        const namespace = await runTransform({
+          files: filesExpanded,
+          flags: cli.flags,
+          customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
+          transformer: 'namespace',
+        });
+        const findUnique = await runTransform({
+          files: filesExpanded,
+          flags: cli.flags,
+          customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
+          transformer: 'findUnique',
+        });
+      } else {
+        return runTransform({
+          files: filesExpanded,
+          flags: cli.flags,
+          customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
+          transformer: selectedTransformer,
+        });
+      }
     });
 }
 
