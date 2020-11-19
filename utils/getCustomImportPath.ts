@@ -9,25 +9,25 @@ interface Options {
   cwd?: string
 }
 export async function getCustomImportPath(options?: Options){
+
   if(!options?.cwd){
     return ''
   }
   const schemaPath = await getSchemaPathInternal(options?.schemaPathFromArgs, {cwd: options.cwd})
+
   const datamodel = schemaPath && fs.readFileSync(schemaPath, {encoding: 'utf8'})
-  if(schemaPath){
+  if(datamodel){
     const config = await getConfig({datamodel, ignoreEnvVarErrors: true})
     process.env.PRISMA_TOP_LEVEL_EXPORTS_FILE = await getTopLevelExports(datamodel)
     const generator = config.generators[0]
     
     if(generator){
-      const isCustom = generator?.output
-      const customImportPath = isCustom && path.relative(options.cwd, generator.output)
-      return isCustom ? customImportPath.replace(/\.\.\//g, '') : ''
+      return generator?.output ? generator.output.replace(/\.\.\//g, '') : ''
     }
   }
   return ''
 }
-function getModelNames(model: {name: string}[]){
+function getModelNames<T extends {name: string}>(model?: T[]){
   return model ? model.map(it => it.name): []
 }
 export async function getTopLevelExports(datamodel: string){

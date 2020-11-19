@@ -11,6 +11,7 @@
 import chalk from "chalk";
 import globby from "globby";
 import inquirer from "inquirer";
+// @ts-ignore
 import isGitClean from "is-git-clean";
 import meow from "meow";
 import { getCustomImportPath } from "../utils/getCustomImportPath";
@@ -20,7 +21,7 @@ import {
   transformerDirectory,
 } from "../utils/runner";
 
-function checkGitStatus(force) {
+function checkGitStatus(force?: boolean) {
   let clean = false;
   let errorMessage = "Unable to determine if git directory is clean";
   try {
@@ -52,12 +53,16 @@ function checkGitStatus(force) {
 
 const TRANSFORMER_INQUIRER_CHOICES = [
   {
-    name: "update-2.12: Runs namespace and findUnique transform",
+    name: "update-2.12: Runs namespace/findUnique/to$ transforms",
     value: "update-2.12",
   },
   {
     name: "namespace: Codemod for @prisma/client namespace change",
     value: "namespace",
+  },
+  {
+    name: "to$: Converts deprecated prisma.x methods to prisma.$x",
+    value: "to$",
   },
   {
     name: "findUnique: Codemod for @prisma/client that converts findOne to findUnique",
@@ -182,6 +187,12 @@ function run() {
           flags: cli.flags,
           customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer: 'findUnique',
+        });
+        const to$ = await runTransform({
+          files: filesExpanded,
+          flags: cli.flags,
+          customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
+          transformer: 'to$',
         });
       } else {
         return runTransform({

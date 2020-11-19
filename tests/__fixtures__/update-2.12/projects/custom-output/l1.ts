@@ -292,3 +292,37 @@ async function main() {
 main().catch((e) => {
   console.error(e)
 })
+
+function dollar(){
+  prisma.transaction()
+  prisma.connect()
+  prisma.disconnect()
+  prisma.executeRaw()
+  prisma.on()
+  prisma.use()
+  prisma.queryRaw()
+
+  prisma.$transaction()
+  prisma.$connect()
+  prisma.$disconnect()
+  prisma.$executeRaw()
+  prisma.$on()
+  prisma.$use()
+  prisma.$queryRaw()
+}
+
+const transaction = "transaction"
+const connect = "connect"
+const disconnect = "disconnect"
+const executeRaw = "executeRaw"
+const on = "on"
+const use = "use"
+const queryRaw = "queryRaw"
+
+test.transaction()
+test.connect()
+test.disconnect()
+test.executeRaw()
+test.on()
+test.use()
+test.queryRaw()
