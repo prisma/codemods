@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-2.12 projects custom-output 1`] = `
+{
+  "name": "minimal",
+  "dependencies": {
+    "@prisma/cli": "^2.10.2",
+    "@prisma/client": "^2.10.2"
+  }
+}
+
+`;

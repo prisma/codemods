@@ -5,6 +5,7 @@
     "declaration": false,
     "esModuleInterop": true,
     "target": "es2015",
+    "strict": true,
     "downlevelIteration": true,
     "preserveWatchOutput": true,
   },

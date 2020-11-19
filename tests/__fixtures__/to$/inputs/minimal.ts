@@ -1,23 +1,8 @@
-import { PrismaClient, UserArgs } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 function main(){
-  const user = prisma.user.findOne({
-    where: {
-      id: "test"
-    }
-  })
-}
-const findOne = 'findOne'
-const func = findOne()
-const obj = user.findOne()
-
-function test(){
-    const args: UserArgs;
-}
-
-function dollar(){
   prisma.transaction()
   prisma.connect()
   prisma.disconnect()
@@ -50,4 +35,3 @@ test.executeRaw()
 test.on()
 test.use()
 test.queryRaw()
-// in the code

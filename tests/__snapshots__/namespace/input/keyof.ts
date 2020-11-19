@@ -15,18 +15,5 @@ function a(a: Prisma.UserArgs): Prisma.UserArgs {
 }
 function b<T extends Prisma.UserArgs>() {
 }
-async function main() {
-  const prisma = new PrismaClient()
-  await prisma.user.update({
-    where: {
-    },
-    data: {
-      posts: {
-      }
-    }
-  })
-  prisma.$disconnect()
-}
-main()
 
 `;

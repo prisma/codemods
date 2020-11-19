@@ -201,5 +201,4 @@ export const sendNewBadgeEmail = ({
   })
 }
 
-
 `;

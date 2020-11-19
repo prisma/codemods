@@ -8,5 +8,4 @@ function test(){
 }
 // in the code
 const args: Prisma.UserArgs
-
 `;

@@ -96,5 +96,4 @@ const Post: React.FC<PostProps> = (props) => {
 
 export default Post;
 
-
 `;

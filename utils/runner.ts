@@ -20,7 +20,7 @@ export function runTransform({
   files: string | string[];
   transformer: string;
   customImportPath?: string;
-  flags: { dry: boolean; print: boolean, runInBand: boolean };
+  flags: { dry?: boolean; print?: boolean, runInBand?: boolean };
   testMode?: boolean
 }) {
   const transformerPath = path.join(transformerDirectory, `${transformer}.js`);
