@@ -1,5 +1,6 @@
 import execa from "execa";
 import path from "path";
+import fs from 'fs'
 export interface Options {
   dry: boolean;
   debug: boolean;
@@ -47,7 +48,9 @@ export function runTransform({
   if(customImportPath){
     args.push(`--ignore-pattern=**/${customImportPath}/**`);
   }
-
+  if(typeof files === 'string' && fs.existsSync(path.join(files, '.gitignore'))){
+    args.push(`--ignore-config=${path.join(files, '.gitignore')}`)
+  }
   args.push("--ignore-pattern=**/node_modules/**");
   // TODO Check TSX parser
   args.push("--extensions=tsx,ts,js,tsx");

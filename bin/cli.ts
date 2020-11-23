@@ -85,7 +85,7 @@ function run() {
   Usage
     $ npx @prisma/codemods <transform> <path> <...options>
       transform    One of the choices from https://github.com/prisma/codemods#transforms
-      path         Files or directory to your app. i.e ./my-awesome-project
+      path         Directory of your app. i.e ./my-awesome-project
   Options
     --force            Bypass Git safety checks and forcibly run codemods
     --schemaPath       Specify a path to your ./prisma/schema.prisma
@@ -141,8 +141,8 @@ function run() {
     .prompt([
       {
         type: "input",
-        name: "files",
-        message: "On which files or directory should the codemods be applied?",
+        name: "dir",
+        message: "On which directory should the codemods be applied?",
         when: !cli.input[1],
         default: ".",
         // validate: () =>
@@ -158,45 +158,38 @@ function run() {
       },
     ])
     .then(async (answers) => {
-      const { files, transformer } = answers;
+      const { dir, transformer } = answers;
 
-      const filesBeforeExpansion = cli.input[1] || files;
-      const filesExpanded = expandFilePathsIfNeeded([filesBeforeExpansion]);
+      const dirPath = cli.input[1] || dir;
 
       const selectedTransformer = cli.input[0] || transformer;
 
-      if (!filesExpanded.length) {
-        console.log(
-          `No files found matching ${filesBeforeExpansion.join(" ")}`
-        );
-        return null;
-      }
       process.env.PRISMA_CUSTOM_IMPORT_PATH = await getCustomImportPath({
         schemaPathFromArgs: cli.flags.schemaPath,
-        cwd: filesBeforeExpansion,
+        cwd: dirPath,
       });
       if(selectedTransformer === 'update-2.12'){
         const namespace = await runTransform({
-          files: filesExpanded,
+          files: dirPath,
           flags: cli.flags,
           customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer: 'namespace',
         });
         const findUnique = await runTransform({
-          files: filesExpanded,
+          files: dirPath,
           flags: cli.flags,
           customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer: 'findUnique',
         });
         const to$ = await runTransform({
-          files: filesExpanded,
+          files: dirPath,
           flags: cli.flags,
           customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer: 'to$',
         });
       } else {
         return runTransform({
-          files: filesExpanded,
+          files: dirPath,
           flags: cli.flags,
           customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer: selectedTransformer,

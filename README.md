@@ -14,7 +14,7 @@ Usage
 
 ```shell
   transform    One of the choices from https://github.com/prisma/codemods#transforms
-  path         Files or directory to your app. i.e ./my-awesome-project
+  path         Directory of your app. i.e ./my-awesome-project
 ```
 
 ```shell
