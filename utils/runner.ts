@@ -53,7 +53,7 @@ export function runTransform({
       args.push(`--ignore-config=${path.join(projectDir, '.gitignore')}`)
     }
     else if(fs.existsSync(path.join(projectDir,'..', '.gitignore'))){
-      args.push(`--ignore-config=${path.join(projectDir, '.gitignore')}`)
+      args.push(`--ignore-config=${path.join(projectDir, '..','.gitignore')}`)
     }
   }
   args.push("--ignore-pattern=**/node_modules/**");
