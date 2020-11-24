@@ -1,6 +1,6 @@
 import execa from "execa";
+import fs from 'fs';
 import path from "path";
-import fs from 'fs'
 export interface Options {
   dry: boolean;
   debug: boolean;
@@ -12,13 +12,13 @@ export const transformerDirectory = path.join(__dirname, "../", "transforms");
 export const jscodeshiftExecutable = require.resolve(".bin/jscodeshift");
 
 export function runTransform({
-  files,
+  projectDir,
   flags,
   transformer,
   customImportPath,
   testMode
 }: {
-  files: string | string[];
+  projectDir: string | string[];
   transformer: string;
   customImportPath?: string;
   flags: { dry?: boolean; print?: boolean, runInBand?: boolean };
@@ -48,8 +48,13 @@ export function runTransform({
   if(customImportPath){
     args.push(`--ignore-pattern=**/${customImportPath}/**`);
   }
-  if(typeof files === 'string' && fs.existsSync(path.join(files, '.gitignore'))){
-    args.push(`--ignore-config=${path.join(files, '.gitignore')}`)
+  if(typeof projectDir === 'string'){
+    if(fs.existsSync(path.join(projectDir, '.gitignore'))){
+      args.push(`--ignore-config=${path.join(projectDir, '.gitignore')}`)
+    }
+    else if(fs.existsSync(path.join(projectDir,'..', '.gitignore'))){
+      args.push(`--ignore-config=${path.join(projectDir, '.gitignore')}`)
+    }
   }
   args.push("--ignore-pattern=**/node_modules/**");
   // TODO Check TSX parser
@@ -58,7 +63,7 @@ export function runTransform({
 
   args = args.concat(["--transform", transformerPath]);
 
-  args = args.concat(files);
+  args = args.concat(projectDir);
 
   console.log(`Executing command: jscodeshift ${args.join(" ")}`);
 

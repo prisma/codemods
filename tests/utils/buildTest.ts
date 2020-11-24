@@ -30,19 +30,19 @@ async function run(transformer: string, filePath: string) {
   let result = "";
   if (transformer === "update-2.12") {
     const namespace = await runTransform({
-      files: filePath,
+      projectDir: filePath,
       customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
       transformer: "namespace",
       ...TEST_OPTIONS,
     });
     const findUnique = await runTransform({
-      files: filePath,
+      projectDir: filePath,
       customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
       transformer: "findUnique",
       ...TEST_OPTIONS,
     });
     const to$ = await runTransform({
-      files: filePath,
+      projectDir: filePath,
       customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
       transformer: "to$",
       ...TEST_OPTIONS,
@@ -50,7 +50,7 @@ async function run(transformer: string, filePath: string) {
     result = [namespace.stdout, findUnique.stdout].join("\n");
   } else {
     const trans = await runTransform({
-      files: filePath,
+      projectDir: filePath,
       customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
       transformer,
       ...TEST_OPTIONS,

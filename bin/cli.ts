@@ -170,26 +170,26 @@ function run() {
       });
       if(selectedTransformer === 'update-2.12'){
         const namespace = await runTransform({
-          files: dirPath,
+          projectDir: dirPath,
           flags: cli.flags,
           customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer: 'namespace',
         });
         const findUnique = await runTransform({
-          files: dirPath,
+          projectDir: dirPath,
           flags: cli.flags,
           customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer: 'findUnique',
         });
         const to$ = await runTransform({
-          files: dirPath,
+          projectDir: dirPath,
           flags: cli.flags,
           customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer: 'to$',
         });
       } else {
         return runTransform({
-          files: dirPath,
+          projectDir: dirPath,
           flags: cli.flags,
           customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
           transformer: selectedTransformer,
