@@ -8,7 +8,7 @@ export default function transform(file: FileInfo, api: API, options: Options) {
   identifiers
     .filter((idPath) => {
       // This finds prisma.x.findOne
-      if("findOne" === idPath.value.name && idPath?.parent?.value?.object?.object?.name === 'prisma'){
+      if("findOne" === idPath.value.name && (idPath?.parent?.value?.object?.object?.name === 'prisma' || idPath?.parent?.value?.object?.object?.property?.name === 'prisma')){
         return true
       }
       return false;
