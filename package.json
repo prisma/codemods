@@ -1,6 +1,6 @@
 {
   "name": "@prisma/codemods",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "A collection of codemods for prisma",
   "repository": "https://github.com/prisma/codemods.git",
   "author": "William Luke <luke@prisma.io>",
