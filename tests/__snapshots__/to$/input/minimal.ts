@@ -21,6 +21,8 @@ function main(){
   prisma.$on()
   prisma.$use()
   prisma.$queryRaw()
+  // For the people with a transaction table
+  prisma.transaction.create()
 }
 
 const transaction = "transaction"

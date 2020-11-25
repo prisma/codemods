@@ -20,7 +20,9 @@ export default function transform(file: FileInfo, api: API, options: Options) {
       // This finds prisma.x.findOne
       if (
         methods.includes(idPath.value.name) &&
-        idPath?.parent?.value?.object?.name === "prisma"
+        idPath?.parent?.value?.object?.name === "prisma" &&
+        idPath?.parent?.parent?.value?.type === 'CallExpression' 
+        
       ) {
         return true;
       }

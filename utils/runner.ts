@@ -40,11 +40,11 @@ export function runTransform({
     args.push("--run-in-band");
   }
   if(testMode){
-    args.push("--silent")
-    
-  } else {
     args.push("--verbose=2");
+  } else {
+    args.push("--verbose=0");
   }
+  
   if(customImportPath){
     args.push(`--ignore-pattern=**/${customImportPath}/**`);
   }
