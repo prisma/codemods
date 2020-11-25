@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-2.12 projects prisma-codemods-issue-6-main 1`] = `
+import { Person as LocalPerson } from "./local-file";
+import { Person } from "@prisma/client";
+
+/** @type {Person} */
+const person = new LocalPerson();
+
+console.log(person);
+
+`;
