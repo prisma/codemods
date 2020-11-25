@@ -39,7 +39,7 @@ function handleImports(root: Collection, j: JSCodeshift) {
       if (nPath.value.local && nPath.value.local.name === "Prisma") {
         shouldAddImport = false;
       }
-      if (nPath.value.local && !RESERVED.includes(nPath.value.local.name)) {
+      if (nPath.value.local && !RESERVED.includes(nPath.value.local.name) && nPath.value.local.name === nPath.value.imported.name) {
         edit.push(nPath.value.local.name);
         return true;
       }
@@ -130,7 +130,7 @@ export default function transform(file: FileInfo, api: API, options: Options) {
   const identifiers = root.find(j.Identifier);
   identifiers
     .filter((idPath) => {
-      return edit.includes(idPath.value.name);
+      return edit.includes(idPath.value.name) && idPath.parent.value.type !== 'ImportSpecifier';
     })
     .replaceWith((p) =>
       Object.assign({}, p.node, {
