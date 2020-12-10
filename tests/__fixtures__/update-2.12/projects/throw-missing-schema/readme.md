@@ -1,0 +1,8 @@
+# @prisma/codemods issue #6
+
+## Reproduction
+
+1. Clone repo
+2. Run `yarn` (other package managers may also work)
+3. Run `yarn test` or `npm test`
+4. Observe if the imports are valid (`Person as LocalPerson` from `./local-file` should not be changed)

@@ -70,14 +70,6 @@ const TRANSFORMER_INQUIRER_CHOICES = [
   },
 ];
 
-function expandFilePathsIfNeeded(filesBeforeExpansion: string[]): string[] {
-  const shouldExpandFiles = filesBeforeExpansion.some((file) =>
-    file.includes("*")
-  );
-  return shouldExpandFiles
-    ? globby.sync(filesBeforeExpansion)
-    : filesBeforeExpansion;
-}
 
 function run() {
   const cli = meow(

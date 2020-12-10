@@ -106,7 +106,6 @@ export async function buildTest(transformer: string) {
           const filePath = tempy.writeSync(
             fs.readFileSync(filePathFixed, { encoding: "utf8" })
           );
-          process.env.PRISMA_CUSTOM_IMPORT_PATH = await getCustomImportPath();
           await run(transformer, filePath);
           const snapshotFile = path.join(
             SNAPSHOT_DIR,
@@ -128,11 +127,20 @@ export async function buildTest(transformer: string) {
         test(projectName, async () => {
           const projectFixedDir = path.join(projectsDir, projectName);
           const projectDir = tempy.directory();
+
           await copy(projectFixedDir, projectDir);
-          process.env.PRISMA_CUSTOM_IMPORT_PATH = await getCustomImportPath({
-            cwd: projectDir,
-          });
+
+          try {
+            process.env.PRISMA_CUSTOM_IMPORT_PATH = await getCustomImportPath({
+              cwd: projectDir,
+            });
+          } catch (err) {
+            if (projectName.startsWith("throw")) {
+              expect(err).toMatchSnapshot();
+            }
+          }
           await run(transformer, projectDir);
+
           const files = getAllFiles(projectDir);
           files.forEach((file) => {
             const snapshotFile = path.join(
@@ -146,8 +154,6 @@ export async function buildTest(transformer: string) {
             // @ts-ignore
             expect(result).toMatchSpecificSnapshot(snapshotFile);
           });
-
-          // @ts-ignore
         });
       }
     });

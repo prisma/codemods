@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-2.12 projects throw-missing-schema 1`] = `[Error: Prisma Schema Could Not be found, try specifying the \`--schemaPath ./path/to/schema.prisma\`]`;
