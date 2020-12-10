@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-2.12 projects issues 1`] = `
+import { Person } from "@prisma/client";
+
+const person = {where: {
+  Person: { id: personId },
+  expiresAt: { gt: new Date() }
+},
+}
+console.log(person);
+
+`;
