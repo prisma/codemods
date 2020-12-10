@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`update-2.12 projects throw-missing-schema 1`] = `
+node_modules
+
+`;

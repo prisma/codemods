@@ -6,15 +6,14 @@ import tempy from 'tempy';
 
 interface Options {
   schemaPathFromArgs?: string, 
-  cwd?: string
+  cwd: string
 }
-export async function getCustomImportPath(options?: Options){
+export async function getCustomImportPath(options: Options){
 
-  if(!options?.cwd){
-    return ''
-  }
   const schemaPath = await getSchemaPathInternal(options?.schemaPathFromArgs, {cwd: options.cwd})
-
+  if(!schemaPath || !fs.existsSync(schemaPath)){
+    throw new Error("Prisma Schema Could Not be found, try specifying the `--schemaPath ./path/to/schema.prisma`")
+  }
   const datamodel = schemaPath && fs.readFileSync(schemaPath, {encoding: 'utf8'})
   if(datamodel){
     const config = await getConfig({datamodel, ignoreEnvVarErrors: true})
