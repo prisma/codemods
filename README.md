@@ -23,7 +23,7 @@ Usage
   -(-s)chemaPath              Specify a path to your ./prisma/schema.prisma
   -(-d)ry                     Dry run (no changes are made to files)
   -(-p)rint                   Print transformed files to your terminal
-  --instanceNames=client      Useful when importing an already instantiated (i.e import client from './client')
+  --instanceNames=myClient    Useful when importing an already instantiated client (i.e import myClient from './myClient')
 ```
 
 ### Transforms
@@ -40,16 +40,15 @@ Usage
 ```shell
 git clone https://github.com/prisma/codemods.git
 cd codemods
-yarn && yarn watch
 ```
-
-In a separate terminal you can then run
 
 ```shell
 yarn cli --help
 ```
 
 ### Testing
+
+If you make changes be sure to use `yarn watch` or `yarn build` before running your tests
 
 ```shell
 yarn test
