@@ -18,7 +18,7 @@ export function runTransform({
   customImportPath,
   testMode
 }: {
-  projectDir: string | string[];
+  projectDir: string;
   transformer: string;
   customImportPath?: string;
   flags: { dry?: boolean; print?: boolean, runInBand?: boolean };
