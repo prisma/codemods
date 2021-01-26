@@ -44,7 +44,7 @@ export function runTransform({
   } else {
     args.push("--verbose=0");
   }
-  
+  args.push("--no-babel")
   if(customImportPath){
     args.push(`--ignore-pattern=**/${customImportPath}/**`);
   }
