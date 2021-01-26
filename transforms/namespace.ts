@@ -9,17 +9,8 @@ import {
   StringLiteral,
 } from "jscodeshift";
 import fs from "fs"
+import { isPrismaImport } from "../utils/helpers";
 let RESERVED = ["PrismaClient", "Prisma"];
-
-function isPrismaImport(value: string) {
-  const prismaPaths = [".prisma/client", "@prisma/client"];
-  if (process.env.PRISMA_CUSTOM_IMPORT_PATH) {
-    prismaPaths.push(process.env.PRISMA_CUSTOM_IMPORT_PATH);
-  }
-  return prismaPaths.some((p) => {
-    return value.includes(p);
-  });
-}
 
 function handleImports(root: Collection, j: JSCodeshift) {
   let edit: string[] = [];

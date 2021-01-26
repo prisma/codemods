@@ -19,10 +19,11 @@ Usage
 
 ```shell
  Options
-  -(-f)orce            Bypass Git safety checks and forcibly run codemods
-  -(-s)chemaPath       Specify a path to your ./prisma/schema.prisma
-  -(-d)ry              Dry run (no changes are made to files)
-  -(-p)rint            Print transformed files to your terminal
+  -(-f)orce                   Bypass Git safety checks and forcibly run codemods
+  -(-s)chemaPath              Specify a path to your ./prisma/schema.prisma
+  -(-d)ry                     Dry run (no changes are made to files)
+  -(-p)rint                   Print transformed files to your terminal
+  --instanceNames=client      Useful when importing an already instantiated (i.e import client from './client')
 ```
 
 ### Transforms

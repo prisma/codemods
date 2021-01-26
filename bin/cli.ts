@@ -82,7 +82,7 @@ function run() {
     --schemaPath                Specify a path to your ./prisma/schema.prisma
     --dry                       Dry run (no changes are made to files)
     --print                     Print transformed files to your terminal
-    --instanceNames client       Useful when importing an already instantiated (i.e import client from './client')
+    --instanceNames=client      Useful when importing an already instantiated (i.e import client from './client')
 `,
     {
       autoHelp: true,
