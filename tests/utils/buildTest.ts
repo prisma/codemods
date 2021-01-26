@@ -81,7 +81,7 @@ const getAllFiles = function (dirPath: string, arrayOfFiles: string[] = []) {
   return arrayOfFiles;
 };
 async function copy(from: string, to: string) {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     Copy({
       from, // Source copy path.
       to, // Destination copy path.

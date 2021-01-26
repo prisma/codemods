@@ -16,4 +16,9 @@ const findOne = 'findOne'
 const func = findOne()
 const obj = user.findOne()
 
+async function f(){
+  let output = await this.prisma.genUser.findUnique({
+    where:{}
+  });
+} 
 `;

@@ -8,7 +8,7 @@
   "bin": "./bin/prisma-codemod.js",
   "scripts": {
     "watch": "yarn tsc -d -w -p tsconfig.json",
-    "cli": "ts-node ./bin/prisma-codemod.ts",
+    "cli": "yarn build && ts-node ./bin/prisma-codemod.ts",
     "prepublish": "yarn build",
     "publish:dev": "yarn publish --tag next",
     "build": "yarn tsc -d -p tsconfig.json",
