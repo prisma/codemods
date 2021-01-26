@@ -2,11 +2,12 @@ import execa from "execa";
 import fs from 'fs';
 import path from "path";
 export interface Options {
-  dry: boolean;
-  debug: boolean;
-  ignorePattern?: string;
-  print?: boolean;
-  runInBand?: boolean;
+  
+  projectDir: string;
+  transformer: string;
+  customImportPath?: string;
+  flags: { dry?: boolean; print?: boolean, runInBand?: boolean, instanceNames?: string };
+  testMode?: boolean
 }
 export const transformerDirectory = path.join(__dirname, "../", "transforms");
 export const jscodeshiftExecutable = require.resolve(".bin/jscodeshift");
@@ -16,18 +17,17 @@ export function runTransform({
   flags,
   transformer,
   customImportPath,
-  testMode
-}: {
-  projectDir: string;
-  transformer: string;
-  customImportPath?: string;
-  flags: { dry?: boolean; print?: boolean, runInBand?: boolean };
-  testMode?: boolean
-}) {
+  testMode,
+}: Options ) {
   const transformerPath = path.join(transformerDirectory, `${transformer}.js`);
 
   let args = [];
 
+  if(flags.instanceNames){
+    if(typeof flags.instanceNames === 'string'){
+      args.push(`--instanceNames=${flags.instanceNames}`)
+    }
+  }
   const { dry, print, runInBand } = flags;
 
   if (dry) {

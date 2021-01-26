@@ -9,7 +9,6 @@
 // @next/codemod optional-name-of-transform optional/path/to/src [...options]
 
 import chalk from "chalk";
-import globby from "globby";
 import inquirer from "inquirer";
 // @ts-ignore
 import isGitClean from "is-git-clean";
@@ -65,11 +64,11 @@ const TRANSFORMER_INQUIRER_CHOICES = [
     value: "to$",
   },
   {
-    name: "findUnique: Codemod for @prisma/client that converts findOne to findUnique",
+    name:
+      "findUnique: Codemod for @prisma/client that converts findOne to findUnique",
     value: "findUnique",
   },
 ];
-
 
 function run() {
   const cli = meow(
@@ -79,14 +78,18 @@ function run() {
       transform    One of the choices from https://github.com/prisma/codemods#transforms
       path         Directory of your app. i.e ./my-awesome-project
   Options
-    --force            Bypass Git safety checks and forcibly run codemods
-    --schemaPath       Specify a path to your ./prisma/schema.prisma
-    --dry              Dry run (no changes are made to files)
-    --print            Print transformed files to your terminal
+    --force                     Bypass Git safety checks and forcibly run codemods
+    --schemaPath                Specify a path to your ./prisma/schema.prisma
+    --dry                       Dry run (no changes are made to files)
+    --print                     Print transformed files to your terminal
+    --instanceNames client       Useful when importing an already instantiated (i.e import client from './client')
 `,
     {
       autoHelp: true,
       flags: {
+        instanceNames: {
+          type: 'string',
+        },
         schemaPath: {
           type: "string",
           isRequired: false,
@@ -113,7 +116,6 @@ function run() {
       },
     }
   );
-
   if (!cli.flags.dry) {
     checkGitStatus(cli.flags.force);
   }
@@ -160,30 +162,27 @@ function run() {
         schemaPathFromArgs: cli.flags.schemaPath,
         cwd: dirPath,
       });
-      if(selectedTransformer === 'update-2.12'){
-        const namespace = await runTransform({
-          projectDir: dirPath,
-          flags: cli.flags,
-          customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
-          transformer: 'namespace',
+      const baseOptions = {
+        projectDir: dirPath,
+        flags: cli.flags,
+        customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
+      };
+      if (selectedTransformer === "update-2.12") {
+        await runTransform({
+          ...baseOptions,
+          transformer: "namespace",
         });
-        const findUnique = await runTransform({
-          projectDir: dirPath,
-          flags: cli.flags,
-          customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
-          transformer: 'findUnique',
+        await runTransform({
+          ...baseOptions,
+          transformer: "findUnique",
         });
-        const to$ = await runTransform({
-          projectDir: dirPath,
-          flags: cli.flags,
-          customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
-          transformer: 'to$',
+        await runTransform({
+          ...baseOptions,
+          transformer: "to$",
         });
       } else {
         return runTransform({
-          projectDir: dirPath,
-          flags: cli.flags,
-          customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
+          ...baseOptions,
           transformer: selectedTransformer,
         });
       }

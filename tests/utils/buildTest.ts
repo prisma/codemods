@@ -15,45 +15,45 @@ import("jest-specific-snapshot");
 
 addSerializer(serializer);
 
-const TEST_OPTIONS = {
-  flags: {
-    dry: false,
-    print: false,
-    runInBand: true,
-  },
-  testMode: true,
-};
 const SNAPSHOT_DIR = path.join(__dirname, "..", "__snapshots__");
 const FIXTURES_DIR = path.join(__dirname, "..", "__fixtures__");
 
-async function run(transformer: string, filePath: string) {
+async function run(
+  transformer: string,
+  filePath: string,
+  flags?: { instanceNames: string }
+) {
   let result = "";
+  const baseOptions = {
+    projectDir: filePath,
+    customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
+    flags: {
+      dry: false,
+      print: false,
+      runInBand: true,
+      instanceNames: flags?.instanceNames,
+    },
+    testMode: true,
+  };
   if (transformer === "update-2.12") {
     const namespace = await runTransform({
-      projectDir: filePath,
-      customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
       transformer: "namespace",
-      ...TEST_OPTIONS,
+      ...baseOptions,
     });
     const findUnique = await runTransform({
-      projectDir: filePath,
-      customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
       transformer: "findUnique",
-      ...TEST_OPTIONS,
+
+      ...baseOptions,
     });
     const to$ = await runTransform({
-      projectDir: filePath,
-      customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
       transformer: "to$",
-      ...TEST_OPTIONS,
+      ...baseOptions,
     });
     result = [namespace.stdout, findUnique.stdout].join("\n");
   } else {
     const trans = await runTransform({
-      projectDir: filePath,
-      customImportPath: process.env.PRISMA_CUSTOM_IMPORT_PATH,
       transformer,
-      ...TEST_OPTIONS,
+      ...baseOptions,
     });
     result = trans.stdout;
   }
@@ -101,12 +101,19 @@ export async function buildTest(transformer: string) {
     describe(`${transformer} inputs`, () => {
       const files = fs.readdirSync(inputsDir);
       for (const file of files) {
-        test(path.basename(file), async () => {
+        const inputFilename = path.basename(file)
+        test(inputFilename, async () => {
           const filePathFixed = path.join(inputsDir, file);
           const filePath = tempy.writeSync(
             fs.readFileSync(filePathFixed, { encoding: "utf8" })
           );
-          await run(transformer, filePath);
+          if (inputFilename.includes("instanceNames")) {
+            await run(transformer, filePath, {
+              instanceNames: "whatEverYouWant,another",
+            });
+          } else {
+            await run(transformer, filePath);
+          }
           const snapshotFile = path.join(
             SNAPSHOT_DIR,
             transformer,
