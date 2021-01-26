@@ -1,4 +1,4 @@
-![npm](./codemods.png)
+![npm](./banner.png)
 
 ![npm](https://img.shields.io/npm/v/@prisma/codemods?style=flat-square)
 
